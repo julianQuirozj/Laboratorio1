@@ -1,0 +1,46 @@
+def convert_base():
+    def to_base_10(num, base):
+        decimal = 0
+        num_str = str(num)
+        for i in range(len(num_str)):
+            digit = num_str[-(i + 1)]
+            if digit.isdigit():
+                decimal += int(digit) * (base ** i)
+            else:
+                decimal += (ord(digit.upper()) - 55) * (base ** i)
+        return decimal
+
+    def from_base_10(num, base):
+        result = ""
+        while num > 0:
+            remainder = num % base
+            if remainder < 10:
+                result = str(remainder) + result
+            else:
+                result = chr(remainder + 55) + result
+            num //= base
+        return result
+
+    num_input = input("Ingrese el número que desea convertir: ")
+    base_input = int(input("Ingrese la base actual del número: "))
+    target_base = int(input("Ingrese la base a la que desea convertir el número: "))
+    
+    if not (1 <= base_input <= 16 and 1 <= target_base <= 16):
+        print("Las bases deben estar entre 1 y 16.")
+        return
+
+    decimal_number = to_base_10(num_input, base_input)
+    converted_number = from_base_10(decimal_number, target_base)
+
+    binary_representation = from_base_10(decimal_number, 2)
+
+    ascii_message = ""
+    for i in range(0, len(binary_representation), 8):
+        binary_byte = binary_representation[i:i + 8]
+        decimal_byte = int(binary_byte, 2)
+        ascii_message += chr(decimal_byte)
+
+    print(f"Número convertido a base {target_base}: {converted_number}")
+    print("Mensaje ASCII correspondiente:", ascii_message)
+
+convert_base()
